@@ -2,6 +2,7 @@
   "name": "infyom-schema-generator",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://harish81.github.io/infyom-schema-generator",
   "dependencies": {
     "react": "^16.10.0",
     "react-dom": "^16.10.0",
