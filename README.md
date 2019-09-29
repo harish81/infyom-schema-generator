@@ -23,3 +23,5 @@ If you are not familiar with InfyOm Laravel Generator please read documentaton [
  - Tailwind css - https://tailwindcss.com/
  - react-syntax-highlighter - https://github.com/conorhastings/react-syntax-highlighter
  - FeatherIcon - https://feathericons.com/
+ - React Feather Icons - https://github.com/feathericons/react-feather
+ - Logo Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)

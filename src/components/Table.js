@@ -15,6 +15,7 @@ class Table extends Component {
                         <th className="text-sm font-semibold text-gray-700 p-2 bg-gray-100"
                             title="(searchable, fillable, primary, inForm, inIndex)"> Options
                         </th>
+                        <th className="text-sm font-semibold text-gray-700 p-2 bg-gray-100">More</th>
                     </tr>
                     </thead>
                     <tbody className="align-baseline">
