@@ -8,7 +8,10 @@
     "react-dom": "^16.10.0",
     "react-feather": "^2.0.3",
     "react-scripts": "3.1.2",
-    "react-syntax-highlighter": "^11.0.2"
+    "react-syntax-highlighter": "^11.0.2",
+    "get-input-selection": "^1.1.4",
+    "prop-types": "^15.6.2",
+    "textarea-caret": "^3.0.2"
   },
   "scripts": {
     "start": "react-scripts start",

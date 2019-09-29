@@ -1,0 +1,26 @@
+.react-autocomplete-input {
+    left: 10px !important;
+    top: 0 !important;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    bottom: auto;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,.12), 0 2px 4px 0 rgba(0,0,0,.08);
+    border-radius: .25rem;
+    display: block;
+    list-style: none;
+    padding: 1px;
+    position: relative;
+    text-align: left;
+    z-index: 20000;
+}
+
+.react-autocomplete-input > li {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.react-autocomplete-input > li.active {
+    background-color: #3182ce;
+    color: #fff;
+}

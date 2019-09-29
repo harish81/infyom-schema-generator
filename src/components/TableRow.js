@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import * as Icons from 'react-feather';
+import {dbTypes, htmlTypes, validationTypes} from "./App";
+import AutocompleteTextField from "./auto-complete/AutoCompleteTextField";
 
 class TableRow extends Component {
     render() {
@@ -11,15 +13,15 @@ class TableRow extends Component {
                            className="border rounded py-1 px-2 text-grey-darkest md:ml-2 focus:outline-none focus:bg-white focus:border-gray-500"/>
                 </td>
                 <td className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-no-wrap">
-                    <input type="text" name="dbType" placeholder="Enter dbType" value={this.props.row.dbType} onChange={(event => {this.props.onChange(event.target)})}
+                    <AutocompleteTextField Component="input" options={dbTypes} trigger="" spacer="" type="text" name="dbType" placeholder="Enter dbType" value={this.props.row.dbType} onChange={(event => {this.props.onChange(event.target)})}
                            className="border rounded py-1 px-2 text-grey-darkest md:ml-2 focus:outline-none focus:bg-white focus:border-gray-500"/>
                 </td>
                 <td className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-no-wrap">
-                    <input type="text" name="htmlType" placeholder="Enter htmlType" value={this.props.row.htmlType} onChange={(event => {this.props.onChange(event.target)})}
+                    <AutocompleteTextField Component="input" options={htmlTypes} trigger="" spacer="" type="text" name="htmlType" placeholder="Enter htmlType" value={this.props.row.htmlType} onChange={(event => {this.props.onChange(event.target)})}
                            className="border rounded py-1 px-2 text-grey-darkest md:ml-2 focus:outline-none focus:bg-white focus:border-gray-500"/>
                 </td>
                 <td className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-no-wrap">
-                    <input type="text" name="validations" placeholder="Enter validations" value={this.props.row.validations} onChange={(event => {this.props.onChange(event.target)})}
+                    <AutocompleteTextField Component="input" options={validationTypes} trigger="" spacer="" type="text" name="validations" placeholder="Enter validations" value={this.props.row.validations} onChange={(event => {this.props.onChange(event.target)})}
                            className="border rounded py-1 px-2 text-grey-darkest md:ml-2 focus:outline-none focus:bg-white focus:border-gray-500"/>
                 </td>
                 <td className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-no-wrap text-left">

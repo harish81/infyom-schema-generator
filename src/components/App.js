@@ -69,7 +69,6 @@ class App extends Component {
     }
 
     updateRow = (input, index) => {
-        console.log(input.type, input.value);
         let newState = [...this.state.schemas];
         if (input.type === 'checkbox') {
             newState[index][input.name] = !newState[index][input.name];
