@@ -94,12 +94,13 @@ class AutocompleteTextField extends React.Component {
         window.addEventListener('resize', this.handleResize);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { options } = this.props;
-        const { caret } = this.state;
 
-        if (options.length !== nextProps.options.length) {
-            this.updateHelper(this.recentValue, caret, nextProps.options);
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const { options } = prevProps;
+        const { caret } = prevState;
+
+        if (options.length !== this.props.options.length) {
+            this.updateHelper(this.recentValue, caret, this.props.options);
         }
     }
 
@@ -414,7 +415,7 @@ class AutocompleteTextField extends React.Component {
         const { value: stateValue } = this.state;
 
         const propagated = Object.assign({}, rest);
-        Object.keys(this.constructor.propTypes).forEach((k) => { delete propagated[k]; });
+        Object.keys(propTypes).forEach((k) => { delete propagated[k]; });//todo err
 
         let val = '';
 
