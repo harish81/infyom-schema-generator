@@ -69,8 +69,8 @@ class TableRow extends Component {
                 </td>
                 <td className="p-2 border-t border-gray-300 font-mono text-xs text-gray-600 whitespace-no-wrap">
                     <div className="inline-flex flex-col">
-                        <Icons.ChevronUp className="hover:bg-gray-300 rounded focus:bg-gray-300" size={20} title="Move Up"/>
-                        <Icons.ChevronDown className="hover:bg-gray-300 rounded focus:bg-gray-300" size={20}/>
+                        <button className="hover:bg-gray-300 rounded focus:bg-gray-300" title={"Move Field Up"} onClick={this.props.shiftRowUp}><Icons.ChevronUp size={20}/></button>
+                        <button className="hover:bg-gray-300 rounded focus:bg-gray-300" title={"Move Field Down"} onClick={this.props.shiftRowDown}><Icons.ChevronDown size={20}/></button>
                         <button title={"Remove This Field"} onClick={this.props.removeRowAt} className="hover:bg-gray-300 rounded focus:bg-gray-300"><Icons.Trash2 size={20}/></button>
                     </div>
                 </td>

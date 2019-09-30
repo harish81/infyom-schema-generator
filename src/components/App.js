@@ -3,7 +3,7 @@ import Table from "./Table";
 import TableRow from "./TableRow";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import codeStyle from "react-syntax-highlighter/dist/cjs/styles/hljs/idea";
-import {jsonFormatter, saveFile} from "../util/util";
+import {array_move, jsonFormatter, saveFile} from "../util/util";
 import * as Icons from 'react-feather';
 
 const singleRow = {
@@ -73,17 +73,20 @@ class App extends Component {
         this.setState({schemas: cState});
     }
 
-    shiftRowUp = (index)=>{//todo: row shift up & down
-       /* if(index===0)
+    shiftRowUp = (index)=>{
+        if(index===0)
             return;
         let cState = [...this.state.schemas];
-        let curElem = {...cState[index]};
-        let prevElem = {...cState[index-1]};
-        this.setState({schemas: cState});*/
+        cState = array_move(cState,index,index-1);
+        this.setState({schemas: cState});
     }
 
     shiftRowDown = (index)=>{
-
+        if(index===this.state.schemas.length-1)
+            return;
+        let cState = [...this.state.schemas];
+        cState = array_move(cState, index,index+1);
+        this.setState({schemas: cState});
     }
 
     updateModelName = (event) => {
@@ -143,6 +146,8 @@ class App extends Component {
                                                   this.updateRow(input, index)
                                               }}
                                               removeRowAt={()=>{this.removeRowAt(index)}}
+                                              shiftRowUp={()=>{this.shiftRowUp(index)}}
+                                              shiftRowDown={()=>{this.shiftRowDown(index)}}
                                     />
                                 );
                             })
