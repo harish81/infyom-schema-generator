@@ -21,16 +21,38 @@ const singleRow = {
 
 export const dbTypes = ["string", "text", "integer", "enum"];
 export const htmlTypes = ["text", "textarea", "email", "date", "number", "password", "select", "checkbox", "radio", "file", "toggle-switch"];
-export const validationTypes = ["required", "string", "numeric"];
+export const validationTypes = ["accepted","active_url","after:date","after_or_equal:date","alpha","alpha_dash","alpha_num","array","bail","before:date","before_or_equal:date","between:min,max","boolean","confirmed","date","date_equals:date","date_format:format","different:field","digits:value","digits_between:min,max","dimensions","distinct","email","ends_with:foo,bar,...","exists:table,column","file","filled","gt:field","gte:field","image","in:foo,bar,...","in_array:anotherfield.*","integer","ip","ipv4","ipv6","json","lt:field","lte:field","max:value","mimetypes:text/plain,...","mimes:foo,bar,...","Basic Usage Of MIME Rule","min:value","not_in:foo,bar,...","not_regex:pattern","nullable","numeric","present","regex:pattern","required","required_if:anotherfield,value,...","required_unless:anotherfield,value,...","required_with:foo,bar,...","required_with_all:foo,bar,...","required_without:foo,bar,...","required_without_all:foo,bar,...","same:field","size:value","starts_with:foo,bar,...","string","timezone","unique:table,column,except,idColumn","url","uuid"];
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             schemas: [],
-            modelName: 'Schema'
+            modelName: 'Schema',
+            moreDropdown: false
         };
         this.state.schemas.push({...singleRow});
+        this.showMenu = this.showMenu.bind(this);
+        this.closeMenu = this.closeMenu.bind(this);
+    }
+
+    showMenu(event) {
+        event.preventDefault();
+
+        this.setState({ moreDropdown: true }, () => {
+            document.addEventListener('click', this.closeMenu);
+        });
+    }
+
+    closeMenu(event) {
+
+        if (!this.dropdownMenu.contains(event.target)) {
+
+            this.setState({ moreDropdown: false }, () => {
+                document.removeEventListener('click', this.closeMenu);
+            });
+
+        }
     }
 
     addRow = () => {
@@ -51,7 +73,7 @@ class App extends Component {
         this.setState({schemas: cState});
     }
 
-    shiftRowUp = (index)=>{//todo: continue
+    shiftRowUp = (index)=>{//todo: row shift up & down
         if(index===0)
             return;
         let cState = [...this.state.schemas];
@@ -143,11 +165,26 @@ class App extends Component {
                             <Icons.Trash2 size={20} className="mr-2"/>
                             <span className="hidden sm:inline">Remove Field</span>
                         </button>
-                        <button title="More"
-                                className="hover:text-gray-700 focus:text-gray-700 text-gray-600 focus:outline-none py-2 px-3 inline-flex font-bold">
-                            <Icons.MoreHorizontal size={20} className="mr-2"/>
-                            <span className="hidden sm:inline">More</span>
-                        </button>
+                        <div className="dropdown">
+                            <button title="More" onClick={this.showMenu}
+                                    className="hover:text-gray-700 focus:text-gray-700 text-gray-600 focus:outline-none py-2 px-3 inline-flex font-bold">
+                                <Icons.MoreHorizontal size={20} className="mr-2"/>
+                                <span className="hidden sm:inline">More</span>
+                            </button>
+                            {
+                                this.state.moreDropdown ?
+                                    (<ul className="dropdown-content" ref={(element) => {
+                                        this.dropdownMenu = element;
+                                    }}>
+                                        <li>Add id Column</li>
+                                        <li>Add created_at Column</li>
+                                        <li>Add updated_at Column</li>
+                                        <li>Add deleted_at Column</li>
+                                        <li>Add created_by Column</li>
+                                    </ul>) : ''
+
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="container m-auto bg-white shadow rounded px-8 pt-4 pb-8 mb-4 mt-2">
