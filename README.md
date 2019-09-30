@@ -19,6 +19,7 @@ If you are not familiar with InfyOm Laravel Generator please read documentaton [
  - voylla!! :clap: Your coffee is ready. :coffee:
  
 ## Credit
+ - [InfyOm Laravel Generator](https://github.com/InfyOmLabs/laravel-generator) - Special Thanks who bring great laravel generator to us.
  - React - https://reactjs.org/
  - Tailwind css - https://tailwindcss.com/
  - react-syntax-highlighter - https://github.com/conorhastings/react-syntax-highlighter
