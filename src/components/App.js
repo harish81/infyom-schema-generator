@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Table from "./Table";
 import TableRow from "./TableRow";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import codeStyle from "react-syntax-highlighter/dist/cjs/styles/hljs/idea";
+import * as codeStyles from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import {array_move, jsonFormatter, saveFile} from "../util/util";
 import * as Icons from 'react-feather';
 
@@ -19,9 +19,9 @@ const singleRow = {
     "inView": true
 };
 
-export const dbTypes = ["string", "text", "integer", "enum"];
+export const dbTypes = ["string", "text", "integer", "enum", "increments", "timestamp", "bigIncrements", "bigInteger", "binary", "boolean", "date", "dateTime", "dateTimeTz", "decimal", "double", "float", "longText", "time", "timeTz", "tinyInteger", "unsignedBigInteger", "unsignedDecimal", "unsignedInteger", "uuid", "year"];
 export const htmlTypes = ["text", "textarea", "email", "date", "number", "password", "select", "checkbox", "radio", "file", "toggle-switch"];
-export const validationTypes = ["accepted","active_url","after:date","after_or_equal:date","alpha","alpha_dash","alpha_num","array","bail","before:date","before_or_equal:date","between:min,max","boolean","confirmed","date","date_equals:date","date_format:format","different:field","digits:value","digits_between:min,max","dimensions","distinct","email","ends_with:foo,bar,...","exists:table,column","file","filled","gt:field","gte:field","image","in:foo,bar,...","in_array:anotherfield.*","integer","ip","ipv4","ipv6","json","lt:field","lte:field","max:value","mimetypes:text/plain,...","mimes:foo,bar,...","Basic Usage Of MIME Rule","min:value","not_in:foo,bar,...","not_regex:pattern","nullable","numeric","present","regex:pattern","required","required_if:anotherfield,value,...","required_unless:anotherfield,value,...","required_with:foo,bar,...","required_with_all:foo,bar,...","required_without:foo,bar,...","required_without_all:foo,bar,...","same:field","size:value","starts_with:foo,bar,...","string","timezone","unique:table,column,except,idColumn","url","uuid"];
+export const validationTypes = ["accepted", "active_url", "after:date", "after_or_equal:date", "alpha", "alpha_dash", "alpha_num", "array", "bail", "before:date", "before_or_equal:date", "between:min,max", "boolean", "confirmed", "date", "date_equals:date", "date_format:format", "different:field", "digits:value", "digits_between:min,max", "dimensions", "distinct", "email", "ends_with:foo,bar,...", "exists:table,column", "file", "filled", "gt:field", "gte:field", "image", "in:foo,bar,...", "in_array:anotherfield.*", "integer", "ip", "ipv4", "ipv6", "json", "lt:field", "lte:field", "max:value", "mimetypes:text/plain,...", "mimes:foo,bar,...", "Basic Usage Of MIME Rule", "min:value", "not_in:foo,bar,...", "not_regex:pattern", "nullable", "numeric", "present", "regex:pattern", "required", "required_if:anotherfield,value,...", "required_unless:anotherfield,value,...", "required_with:foo,bar,...", "required_with_all:foo,bar,...", "required_without:foo,bar,...", "required_without_all:foo,bar,...", "same:field", "size:value", "starts_with:foo,bar,...", "string", "timezone", "unique:table,column,except,idColumn", "url", "uuid"];
 
 class App extends Component {
     constructor(props) {
@@ -29,30 +29,42 @@ class App extends Component {
         this.state = {
             schemas: [],
             modelName: 'Schema',
-            moreDropdown: false
+            moreDropdown: false,
+            codeStyle: 'idea'
         };
         this.state.schemas.push({...singleRow});
         this.showMenu = this.showMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
     }
 
+
+    componentDidMount() {
+        //load the saved state from localstorage
+        let lastState = localStorage.getItem("currentState");
+        if (lastState != null) {
+            this.setState(JSON.parse(lastState));
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        //save the state to localstorage
+        let strState = JSON.stringify(this.state);
+        localStorage.setItem("currentState", strState);
+    }
+
     showMenu(event) {
         event.preventDefault();
 
-        this.setState({ moreDropdown: true }, () => {
+        this.setState({moreDropdown: true}, () => {
             document.addEventListener('click', this.closeMenu);
         });
     }
 
     closeMenu(event) {
-
-        if (!this.dropdownMenu.contains(event.target)) {
-
-            this.setState({ moreDropdown: false }, () => {
-                document.removeEventListener('click', this.closeMenu);
-            });
-
+        if (this.dropdownMenu && !this.dropdownMenu.contains(event.target)) {
+            this.setState({moreDropdown: false});
         }
+        document.removeEventListener('click', this.closeMenu);
     }
 
     addRow = () => {
@@ -67,26 +79,94 @@ class App extends Component {
         this.setState({schemas: cState});
     }
 
-    removeRowAt = (index)=>{
+    removeRowAt = (index) => {
         let cState = [...this.state.schemas];
-        cState.splice(index,1);
+        cState.splice(index, 1);
         this.setState({schemas: cState});
     }
 
-    shiftRowUp = (index)=>{
-        if(index===0)
+    shiftRowUp = (index) => {
+        if (index === 0)
             return;
         let cState = [...this.state.schemas];
-        cState = array_move(cState,index,index-1);
+        cState = array_move(cState, index, index - 1);
         this.setState({schemas: cState});
     }
 
-    shiftRowDown = (index)=>{
-        if(index===this.state.schemas.length-1)
+    shiftRowDown = (index) => {
+        if (index === this.state.schemas.length - 1)
             return;
         let cState = [...this.state.schemas];
-        cState = array_move(cState, index,index+1);
+        cState = array_move(cState, index, index + 1);
         this.setState({schemas: cState});
+    }
+
+    addIdRow = () => {
+        let cState = [...this.state.schemas];
+        cState.splice(0, 0, {
+            "name": "id",
+            "dbType": "increments",
+            "htmlType": null,
+            "validations": null,
+            "searchable": false,
+            "fillable": false,
+            "primary": true,
+            "inForm": false,
+            "inIndex": false,
+            "inView": false
+        });
+        this.setState({schemas: cState,moreDropdown:false});
+    }
+
+    addCreatedAtRow = ()=>{
+        let cState = [...this.state.schemas];
+        cState.splice(cState.length, 0, {
+            "name": "created_at",
+            "dbType": "timestamp",
+            "htmlType": null,
+            "validations": null,
+            "searchable": false,
+            "fillable": false,
+            "primary": false,
+            "inForm": false,
+            "inIndex": false,
+            "inView": true
+        });
+        this.setState({schemas: cState,moreDropdown:false});
+    }
+
+    addUpdatedAt = ()=>{
+        let cState = [...this.state.schemas];
+        cState.splice(cState.length, 0, {
+            "name": "updated_at",
+            "dbType": "timestamp",
+            "htmlType": null,
+            "validations": null,
+            "searchable": false,
+            "fillable": false,
+            "primary": false,
+            "inForm": false,
+            "inIndex": false,
+            "inView": true
+        });
+        this.setState({schemas: cState,moreDropdown:false});
+    }
+
+    addDeletedAt = ()=>{
+        let cState = [...this.state.schemas];
+        cState.splice(cState.length, 0, {
+            "name": "deleted_at",
+            "dbType": "timestamp",
+            "htmlType": null,
+            "validations": null,
+            "searchable": false,
+            "fillable": false,
+            "primary": false,
+            "inForm": false,
+            "inIndex": false,
+            "inView": false
+        });
+        this.setState({schemas: cState,moreDropdown:false});
     }
 
     updateModelName = (event) => {
@@ -113,12 +193,17 @@ class App extends Component {
                 <nav id="header" className="bg-white fixed w-full z-10 top-0 shadow">
 
 
-                    <div className="w-full container mx-auto flex flex-wrap justify-between items-center mt-0 pt-3 pb-3 md:pb-0">
+                    <div
+                        className="w-full container mx-auto flex flex-wrap justify-between items-center mt-0 pt-3 pb-3 md:pb-0">
 
-                        <div className="pl-2 md:pl-0 pb-1 inline-flex" style={{alignItems:'center'}}>
-                            <img src={process.env.PUBLIC_URL + "/logo192.png"} className="w-10 h-10" alt="Site Logo"/> <span className="text-blue-600 no-underline hover:no-underline font-bold pl-1">Infyom Json Schema Generator</span>
+                        <div className="pl-2 md:pl-0 pb-1 inline-flex" style={{alignItems: 'center'}}>
+                            <img src={process.env.PUBLIC_URL + "/logo192.png"} className="w-10 h-10" alt="Site Logo"/>
+                            <span className="text-blue-600 no-underline hover:no-underline font-bold pl-1">Infyom Json Schema Generator</span>
                         </div>
-                        <a href="https://github.com/harish81/infyom-schema-generator" rel="noopener noreferrer" target="_blank" className="text-gray-600 hover:bg-gray-300 focus:bg-gray-300 p-2 rounded mr-2" title={"Github"}>
+                        <a href="https://github.com/harish81/infyom-schema-generator" rel="noopener noreferrer"
+                           target="_blank"
+                           className="text-gray-600 hover:bg-gray-300 focus:bg-gray-300 p-2 rounded mr-2"
+                           title={"Github"}>
                             <Icons.GitHub size={24}/>
                         </a>
                     </div>
@@ -145,9 +230,15 @@ class App extends Component {
                                               onChange={(input) => {
                                                   this.updateRow(input, index)
                                               }}
-                                              removeRowAt={()=>{this.removeRowAt(index)}}
-                                              shiftRowUp={()=>{this.shiftRowUp(index)}}
-                                              shiftRowDown={()=>{this.shiftRowDown(index)}}
+                                              removeRowAt={() => {
+                                                  this.removeRowAt(index)
+                                              }}
+                                              shiftRowUp={() => {
+                                                  this.shiftRowUp(index)
+                                              }}
+                                              shiftRowDown={() => {
+                                                  this.shiftRowDown(index)
+                                              }}
                                     />
                                 );
                             })
@@ -156,9 +247,10 @@ class App extends Component {
 
                     <div className="flex items-center mt-4 bg-gray-100 rounded border justify-center">
                         <button title="Add Field"
-                            className="hover:text-blue-500 focus:text-blue-500 text-gray-600 focus:outline-none py-2 px-3 inline-flex font-bold"
-                            type="button" onClick={this.addRow}>
-                            <Icons.PlusCircle size={20} className="mr-2"/> <span className="hidden sm:inline">Add Field</span>
+                                className="hover:text-blue-500 focus:text-blue-500 text-gray-600 focus:outline-none py-2 px-3 inline-flex font-bold"
+                                type="button" onClick={this.addRow}>
+                            <Icons.PlusCircle size={20} className="mr-2"/> <span
+                            className="hidden sm:inline">Add Field</span>
                         </button>
                         <button onClick={this.downloadFile} title="Download Schema File"
                                 className="hover:text-green-500 focus:text-green-500 text-gray-600 focus:outline-none py-2 px-3 inline-flex font-bold">
@@ -181,11 +273,10 @@ class App extends Component {
                                     (<ul className="dropdown-content" ref={(element) => {
                                         this.dropdownMenu = element;
                                     }}>
-                                        <li>Add id Column</li>
-                                        <li>Add created_at Column</li>
-                                        <li>Add updated_at Column</li>
-                                        <li>Add deleted_at Column</li>
-                                        <li>Add created_by Column</li>
+                                        <li onClick={this.addIdRow}>Add id Column</li>
+                                        <li onClick={this.addCreatedAtRow}>Add created_at Column</li>
+                                        <li onClick={this.addUpdatedAt}>Add updated_at Column</li>
+                                        <li onClick={this.addDeletedAt}>Add deleted_at Column</li>
                                     </ul>) : ''
 
                             }
@@ -193,9 +284,32 @@ class App extends Component {
                     </div>
                 </div>
                 <div className="container m-auto bg-white shadow rounded px-8 pt-4 pb-8 mb-4 mt-2">
-                    <h5 className="font-bold text-gray-600">{this.state.modelName}.json</h5>
+                    <div className="flex justify-between items-center">
+                        <h5 className="font-bold text-gray-600 inline">{this.state.modelName}.json</h5>
+                        <div className="inline-block relative w-64">
+                            <select name="code_style" title={"Choose your code theme"} value={this.state.codeStyle}
+                                    onChange={(event) => {
+                                        this.setState({codeStyle: event.target.value})
+                                    }}
+                                    className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none">
+                                {
+                                    Object.keys(codeStyles).map(style => (
+                                        <option key={style}>{style}</option>
+                                    ))
+                                }
+                            </select>
+                            <div
+                                className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                     viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
                     <div className="overflow-auto mt-3 text-sm">
-                        <SyntaxHighlighter language="json" style={codeStyle}>
+                        <SyntaxHighlighter language="json" style={codeStyles[this.state.codeStyle]}>
                             {jsonFormatter(JSON.stringify(this.state.schemas))}
                         </SyntaxHighlighter>
                     </div>

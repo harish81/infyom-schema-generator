@@ -104,6 +104,8 @@ class AutocompleteTextField extends React.Component {
         }
     }
 
+
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
     }
