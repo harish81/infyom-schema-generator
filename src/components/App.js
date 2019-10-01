@@ -116,7 +116,7 @@ class App extends Component {
                     <div className="w-full container mx-auto flex flex-wrap justify-between items-center mt-0 pt-3 pb-3 md:pb-0">
 
                         <div className="pl-2 md:pl-0 pb-1 inline-flex" style={{alignItems:'center'}}>
-                            <img src={process.env.PUBLIC_URL + "/logo192.png"} className="w-10 h-10" alt="Logo"/> <span className="text-blue-600 no-underline hover:no-underline font-bold pl-1">Infyom Json Schema Generator</span>
+                            <img src={process.env.PUBLIC_URL + "/logo192.png"} className="w-10 h-10" alt="Site Logo"/> <span className="text-blue-600 no-underline hover:no-underline font-bold pl-1">Infyom Json Schema Generator</span>
                         </div>
                         <a href="https://github.com/harish81/infyom-schema-generator" rel="noopener noreferrer" target="_blank" className="text-gray-600 hover:bg-gray-300 focus:bg-gray-300 p-2 rounded mr-2" title={"Github"}>
                             <Icons.GitHub size={24}/>
