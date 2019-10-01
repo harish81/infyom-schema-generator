@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/infyom-schema-generator/precache-manifest.3c01b403a79bb8267d0dc087e42384ad.js"
+  "/infyom-schema-generator/precache-manifest.b43251be1dfb5fdc3fcaf6a878dd3fc8.js"
 );
 
 self.addEventListener('message', (event) => {
