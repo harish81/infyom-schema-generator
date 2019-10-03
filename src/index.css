@@ -1,6 +1,9 @@
+.react-autocomplete-input-container{
+    position: relative;
+}
 .react-autocomplete-input {
-    left: 1.9vw !important;
-    top: 0 !important;
+    left: .7rem !important;
+    top: 1.3rem !important;
     background-clip: padding-box;
     background-color: #fff;
     border: 1px solid #e2e8f0;
@@ -10,9 +13,10 @@
     display: block;
     list-style: none;
     padding: 1px;
-    position: relative;
+    position: absolute;
     text-align: left;
     z-index: 20000;
+    min-width: 10rem;
 }
 
 .react-autocomplete-input > li {
@@ -44,4 +48,14 @@
 .dropdown-content > li:hover{
     background: #eee;
     cursor: pointer;
+}
+
+.form-check-label{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: .1rem;
+}
+.form-check-label span{
+    margin-left: .3rem;
 }

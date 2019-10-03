@@ -430,7 +430,7 @@ class AutocompleteTextField extends React.Component {
         }
 
         return (
-            <span>
+            <span className="react-autocomplete-input-container">
         <Component
             disabled={disabled}
             onBlur={onBlur}
