@@ -14,7 +14,7 @@ If you are not familiar with InfyOm Laravel Generator please read documentaton [
  - Modify name, dbType, htmlType, validation, options etc.
  - Download/Copy Generated Schema File
  - Place the Schema file under `resources/model_schemas`.
- - Fire `php artisan infyom:scaffold $MODEL --fieldsFile=$SCHEMA_FILE.json` (without extension).
+ - Fire `php artisan infyom:scaffold $MODEL --fieldsFile=$SCHEMA_FILE.json`.
  - `php artisan migrate`
  - voylla!! :clap: Your coffee is ready. :coffee:
  
